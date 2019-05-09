@@ -1,0 +1,21 @@
+#include<stdio.h>
+#include<time.h>
+
+
+void sorteio_paises(char j1[], char j2[]){
+	int x,i=0;
+	
+	for(i=0;i<20;i++){
+	x=srand( (2)time(NULL) );	
+	printf("sorteio %d numero %d\n",i,x);
+	}	
+}
+
+int main(){
+	char jo1[10] = {}, jo2[10]={};
+	sorteio_paises(jo1, jo2);
+	
+	return 0;
+}
+
+
