@@ -1,0 +1,16 @@
+//bibliotecas
+#include <stdio.h> // entrada e saída
+#include <locale.h> //biblioteca da função de colocar acentos
+#include <time.h> // biblioteca para sorteio de numeros
+#include "war1game.h" // biblioteca das funções do jogo
+
+//programa
+int main(){
+	//função para conseguir printar as letras 'ç' e acentos
+	setlocale(LC_ALL,"");
+	//criação de sementes para sorteio
+	srand((unsigned)time(NULL));
+	//função para printar main
+	printmapa();
+	return 0;
+}
