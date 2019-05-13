@@ -2,37 +2,277 @@
 #include <string.h>
 #include <time.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 void printmapa();
-
+int checkfronteira(char pais_check, char pais_front);
 
 
 
 void printmapa(){
 	int i,j;
-	char mapa[15][74] =  {{"**#####                                                              **"},
-				          {"  #000#******************#####     #####*********##########          * "},
-				          {"  #-A-#                  #000#     #000#         #000##000# #####***** "},
-				          {"##### #####             *#-F-#######-G-#         #-M-##-N-#*#000#      "},
-				          {"#000# #000#**************     #000#                   ##### #-O-#      "},
-				          {"#-B-# #-C-#                   #-H-#                   #000#    #####   "},
-				          {"   #####                         #####                #-P-#    #000#   "},
-				          {"   #000#                        *#000#              #####      #-Q-#   "},
-				          {"   #-D-#                        *#-I-#              #000#         *    "},
-				          {"      #####                     *                   #-R-#         *    "},
-				          {"      #000#                   ***                    #####        #####"},
-				          {"      #-E-#************   #####                      #000#        #000#"},
-				          {"                     ######000######*****************#-S-#        #-T-#"},
-				          {"                     #000##-K-##000#                     ***********   "},
-				          {"                     #-J-#     #-L-#                                   "}};
+	char mapa[17][74] =  {{"_________________________________________________________________________"},
+						  {"|**#####                                                              **|"},
+				          {"|  #000#******************#####     #####*********##########          * |"},
+				          {"|  #-A-#                  #000#     #000#         #000##000# #####***** |"},
+				          {"|##### #####             *#-F-#######-G-#         #-M-##-N-#*#000#      |"},
+				          {"|#000# #000#**************     #000#                   ##### #-O-#      |"},
+				          {"|#-B-# #-C-#                   #-H-#                   #000#    #####   |"},
+				          {"|   #####                         #####                #-P-#    #000#   |"},
+				          {"|   #000#                        *#000#              #####      #-Q-#   |"},
+				          {"|   #-D-#                        *#-I-#              #000#         *    |"},
+				          {"|      #####                     *                   #-R-#         *    |"},
+				          {"|      #000#                   ***                    #####        #####|"},
+				          {"|      #-E-#************   #####                      #000#        #000#|"},
+				          {"|                     ######000######*****************#-S-#        #-T-#|"},
+				          {"|                     #000##-K-##000#                     ***********   |"},
+				          {"|                     #-J-#     #-L-#                                   |"},
+						  {"|_______________________________________________________________________|"}};
 				      
+	
 				      
-				      
-	for (i=0;i<15;i++){
+	for (i=0;i<17;i++){
 		printf("\t");
-		for (j=0;j<80;j++){
+		for (j=0;j<74;j++){
 			printf("%c", mapa[i][j]);
 		}
 		printf("\n");
+	}
+}
+
+int checkfronteira(char pais_check, char pais_front){
+	//nomeação de variaveis
+	char conjunto_paises[7] = {};
+	int i=0;
+	
+	//transformando as letras em minusculas
+	pais_check = tolower(pais_check);
+	pais_front = tolower(pais_front);
+	switch(pais_check){
+		//cada case checa o de acordo com o mapa se o pais tem fronteira ou não
+		case ('a'):{
+			strcpy(conjunto_paises,"bcfo");
+			for(i=0;i<strlen(conjunto_paises); i++){
+				if(pais_front== conjunto_paises[i]){
+					return 1;
+					break;
+				}
+			}
+			return 0;			
+			break;
+		}
+		case ('b'):{
+			strcpy(conjunto_paises,"acd");
+			for(i=0;i<strlen(conjunto_paises); i++){
+				if(pais_front== conjunto_paises[i]){
+					return 1;
+					break;
+				}
+			}
+			return 0;
+			break;
+		}
+		case('c'):{
+			strcpy(conjunto_paises,"abdf");
+			for(i=0;i<strlen(conjunto_paises); i++){
+				if(pais_front== conjunto_paises[i]){
+					return 1;
+					break;
+				}
+			}
+			return 0;
+			break;
+		}
+		case('d'):{
+			strcpy(conjunto_paises,"bce");
+			for(i=0;i<strlen(conjunto_paises); i++){
+				if(pais_front== conjunto_paises[i]){
+					return 1;
+					break;
+				}
+			}
+			return 0;
+			break;
+		}
+		case('e'):{
+			strcpy(conjunto_paises,"dk");
+			for(i=0;i<strlen(conjunto_paises); i++){
+				if(pais_front== conjunto_paises[i]){
+					return 1;
+					break;
+				}
+			}
+			return 0;
+			break;
+		}
+		case('f'):{
+			strcpy(conjunto_paises,"ach");
+			for(i=0;i<strlen(conjunto_paises); i++){
+				if(pais_front== conjunto_paises[i]){
+					return 1;
+					break;
+				}
+			}
+			return 0;
+			break;
+		}
+		case('g'):{
+			strcpy(conjunto_paises,"hm");
+			for(i=0;i<strlen(conjunto_paises); i++){
+				if(pais_front== conjunto_paises[i]){
+					return 1;
+					break;
+				}
+			}
+			return 0;
+			break;
+		}
+		case('h'):{
+			strcpy(conjunto_paises,"fgi");
+			for(i=0;i<strlen(conjunto_paises); i++){
+				if(pais_front== conjunto_paises[i]){
+					return 1;
+					break;
+				}
+			}
+			return 0;
+			break;
+		}
+		case('i'):{
+			strcpy(conjunto_paises,"hk");
+			for(i=0;i<strlen(conjunto_paises); i++){
+				if(pais_front== conjunto_paises[i]){
+					return 1;
+					break;
+				}
+			}
+			return 0;
+			break;
+		}
+		case('j'):{
+			strcpy(conjunto_paises,"ek");
+			for(i=0;i<strlen(conjunto_paises); i++){
+				if(pais_front== conjunto_paises[i]){
+					return 1;
+					break;
+				}
+			}
+			return 0;
+			break;
+		}
+		case('k'):{
+			strcpy(conjunto_paises,"ijl");
+			for(i=0;i<strlen(conjunto_paises); i++){
+				if(pais_front== conjunto_paises[i]){
+					return 1;
+					break;
+				}
+			}
+			return 0;
+			break;
+		}
+		case('l'):{
+			strcpy(conjunto_paises,"ks");
+			for(i=0;i<strlen(conjunto_paises); i++){
+				if(pais_front== conjunto_paises[i]){
+					return 1;
+					break;
+				}
+			}
+			return 0;
+			break;
+		}
+		case('m'):{
+			strcpy(conjunto_paises,"gn");
+			for(i=0;i<strlen(conjunto_paises); i++){
+				if(pais_front== conjunto_paises[i]){
+					return 1;
+					break;
+				}
+			}
+			return 0;
+			break;
+		}
+			case('n'):{
+			strcpy(conjunto_paises,"mop");
+			for(i=0;i<strlen(conjunto_paises); i++){
+				if(pais_front== conjunto_paises[i]){
+					return 1;
+					break;
+				}
+			}
+			return 0;
+			break;
+		}
+			case('o'):{
+			strcpy(conjunto_paises,"anpq");
+			for(i=0;i<strlen(conjunto_paises); i++){
+				if(pais_front== conjunto_paises[i]){
+					return 1;
+					break;
+				}
+			}
+			return 0;
+			break;
+		}
+			case('p'):{
+			strcpy(conjunto_paises,"nor");
+			for(i=0;i<strlen(conjunto_paises); i++){
+				if(pais_front== conjunto_paises[i]){
+					return 1;
+					break;
+				}
+			}
+			return 0;
+			break;
+		}
+			case('q'):{
+			strcpy(conjunto_paises,"ot");
+			for(i=0;i<strlen(conjunto_paises); i++){
+				if(pais_front== conjunto_paises[i]){
+					return 1;
+					break;
+				}
+			}
+			return 0;
+			break;
+		}
+			case('r'):{
+			strcpy(conjunto_paises,"ps");
+			for(i=0;i<strlen(conjunto_paises); i++){
+				if(pais_front== conjunto_paises[i]){
+					return 1;
+					break;
+				}
+			}
+			return 0;
+			break;
+		}
+			case('s'):{
+			strcpy(conjunto_paises,"rlt");
+			for(i=0;i<strlen(conjunto_paises); i++){
+				if(pais_front== conjunto_paises[i]){
+					return 1;
+					break;
+				}
+			}
+			return 0;
+			break;
+		}
+			case('t'):{
+			strcpy(conjunto_paises,"sq");
+			for(i=0;i<strlen(conjunto_paises); i++){
+				if(pais_front== conjunto_paises[i]){
+					return 1;
+					break;
+				}
+			}
+			return 0;
+			break;
+		}
+		default:{
+			return 2;
+			break;
+		}
 	}
 }
