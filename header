@@ -6,7 +6,7 @@
 
 void printmapa();
 int checkfronteira(char pais_check, char pais_front);
-
+void sorteio_paises(char j1[], char j2[]);
 
 
 void printmapa(){
@@ -275,4 +275,42 @@ int checkfronteira(char pais_check, char pais_front){
 			break;
 		}
 	}
+}
+
+void sorteio_paises(char j1[], char j2[]){
+	int x,i=0;
+	srand((unsigned)time(NULL));
+	int y,p1=0,p2=0;
+	char jogo[21] = {"abcdefghijklmnopqrst"};
+		
+	
+	srand((unsigned)time(NULL));
+	for(i=0;i<20;i++){		
+	y=rand()%2;
+		
+	if(y==0){
+		j1[p1]=jogo[i];
+		p1++;
+
+	}
+	if(y==1){
+		j2[p2]=jogo[i];
+		p2++;
+	}	
+	if(p1>=10){
+		for(i; i<20;i++){
+		
+		j2[p2]=jogo[i];
+		p2++;
+		}	
+	}
+	if(p2>=10){
+		for(i; i<20;i++){
+		
+		j1[p1]=jogo[i];
+		p1++;
+		}	
+	}		
+}	
+	
 }
