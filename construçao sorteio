@@ -3,12 +3,47 @@
 
 
 void sorteio_paises(char j1[], char j2[]){
-	int y,x,i=0;
-	x=srand((unsigned)time(NULL));
+	int y,p1=0,p2=0,i=0;
+	char jogo[20]={"abcdefghijklmnopqrst"};
+		
+	
+	srand((unsigned)time(NULL));
 	for(i=0;i<20;i++){		
 	y=rand()%2;
-	printf("sorteio %d numero %d\n",i+1,y);
+	
+
+if(p1>=10){
+	
+}
+	
+	if(y==0){
+		j1[p1]=jogo[i];
+		p1++;
+
+	}
+	if(y==1){
+		j2[p2]=jogo[i];
+		p2++;
 	}	
+	if(p1>=10){
+		for(i; i<20;i++){
+		
+		j2[p2]=jogo[i];
+		p2++;
+		}	
+	}
+	if(p2>=10){
+		for(i; i<20;i++){
+		
+		j1[p1]=jogo[i];
+		p1++;
+		}	
+	}		
+}	
+	
+	printf("jogador um paises %s \n", j1);
+		printf("jogador dois paises %s \n", j2);
+		
 }
 
 int main(){
@@ -17,5 +52,3 @@ int main(){
 	
 	return 0;
 }
-
-
