@@ -1,26 +1,26 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+#include <locale.h>
 
 void nome_jogador(){
 	int y, i=0;
 	char jogador1[25], jogador2[25];
-	printf("Jogador 1 digite seu nome de guerra:");
+	printf("Jogador 1 digite seu nome de guerra: ");
 	scanf("%s", &jogador1);
-	printf("Jogador 2 digite seu nome de guerra:");
+	printf("Jogador 2 digite seu nome de guerra: ");
 	scanf("%s", &jogador2);
 	srand((unsigned)time(NULL));
-	for(i=0;i<2;i++);		
+	for(i=0;i<1;i++);		
 	y=rand()%2;
-	if(i=0){
+	if(y==0){
 		printf("%s começa o jogo", jogador1);
 	}else
 	printf("%s começa o jogo", jogador2);
 }
 
 int main(){
+	setlocale(LC_ALL,"");
 	nome_jogador();
 	return 0;
 }
-
-	
