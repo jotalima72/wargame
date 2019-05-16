@@ -1,42 +1,240 @@
 #include <stdio.h>
-#include <string.h>
+#include <ctype.h>
+#include <locale.h>
 #include <time.h>
 #include <stdlib.h>
-#include <ctype.h>
+#include <string.h>
 
 void printmapa();
 int checkfronteira(char pais_check, char pais_front);
 void sorteio_paises(char j1[], char j2[]);
+void muda_paises(char paisesj1[], char paisesj2[]);
+void jogador_nome();
+void sorteio_dados( int atk[], int dsf[]);
+void somar_tropas();
 
+char nome_jogador1[50], nome_jogador2[50];
 
-void printmapa(){
+int tropastotais[20] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+
+char mapa[17][74] =  {{"_________________________________________________________________________"},
+					  {"|**#####                                                              **|"},
+			          {"|  #000#******************#####     #####*********##########          * |"},
+			          {"|  #-A-#                  #000#     #000#         #000##000# #####***** |"},
+			          {"|##### #####             *#-F-#######-G-#         #-M-##-N-#*#000#      |"},
+			          {"|#000# #000#**************     #000#                   ##### #-O-#      |"},
+			          {"|#-B-# #-C-#                   #-H-#                   #000#    #####   |"},
+			          {"|   #####                         #####                #-P-#    #000#   |"},
+			          {"|   #000#                        *#000#              #####      #-Q-#   |"},
+			          {"|   #-D-#                        *#-I-#              #000#         *    |"},
+			          {"|      #####                     *                   #-R-#         *    |"},
+			          {"|      #000#                   ***                    #####        #####|"},
+			          {"|      #-E-#************   #####                      #000#        #000#|"},
+			          {"|                     ######000######*****************#-S-#        #-T-#|"},
+			          {"|                     #000##-K-##000#                     ***********   |"},
+			          {"|                     #-J-#     #-L-#                                   |"},
+					  {"|_______________________________________________________________________|"}};
+					  
+void printmapainicial(){
 	int i,j;
-	char mapa[17][74] =  {{"_________________________________________________________________________"},
-						  {"|**#####                                                              **|"},
-				          {"|  #000#******************#####     #####*********##########          * |"},
-				          {"|  #-A-#                  #000#     #000#         #000##000# #####***** |"},
-				          {"|##### #####             *#-F-#######-G-#         #-M-##-N-#*#000#      |"},
-				          {"|#000# #000#**************     #000#                   ##### #-O-#      |"},
-				          {"|#-B-# #-C-#                   #-H-#                   #000#    #####   |"},
-				          {"|   #####                         #####                #-P-#    #000#   |"},
-				          {"|   #000#                        *#000#              #####      #-Q-#   |"},
-				          {"|   #-D-#                        *#-I-#              #000#         *    |"},
-				          {"|      #####                     *                   #-R-#         *    |"},
-				          {"|      #000#                   ***                    #####        #####|"},
-				          {"|      #-E-#************   #####                      #000#        #000#|"},
-				          {"|                     ######000######*****************#-S-#        #-T-#|"},
-				          {"|                     #000##-K-##000#                     ***********   |"},
-				          {"|                     #-J-#     #-L-#                                   |"},
-						  {"|_______________________________________________________________________|"}};
-				      
-	
-				      
 	for (i=0;i<17;i++){
 		printf("\t");
 		for (j=0;j<74;j++){
 			printf("%c", mapa[i][j]);
 		}
 		printf("\n");
+	}
+}				
+
+
+void printmapa(){
+	int i,j;
+;
+	system("cls");
+	somar_tropas();
+	printf("\tJogador A: %s\t X \t Jogador B: %s\n",nome_jogador1, nome_jogador2);		      
+	for (i=0;i<17;i++){
+		printf("\t");
+		for (j=0;j<74;j++){
+			printf("%c", mapa[i][j]);
+		}
+		printf("\n");
+	}
+}
+
+void muda_paises(char paisesj1[], char paisesj2[]){
+	int x, y;
+	
+	for(x=0;x<strlen(paisesj1);x++){
+		switch(paisesj1[x]){
+			case('a'):{
+				mapa[1][5]='A';
+				break;
+			}
+			case('b'):{
+				mapa[4][3]='A';
+				break;
+			}
+			case('c'):{
+				mapa[4][9]='A';
+				break;
+			}
+			case('d'):{
+				mapa[7][6]='A';
+				break;
+			}
+			case('e'):{
+				mapa[10][9]='A';
+				break;
+			}
+			case('f'):{
+				mapa[2][28]='A';
+				break;
+			}
+			case('g'):{
+				mapa[2][38]='A';
+				break;
+			}
+			case('h'):{
+				mapa[4][33]='A';
+				break;
+			}
+			case('i'):{
+				mapa[7][36]='A';
+				break;
+			}
+			case('j'):{
+				mapa[13][24]='A';
+				break;
+			}
+			case('k'):{
+				mapa[12][29]='A';
+				break;
+			}
+			case('l'):{
+				mapa[13][34]='A';
+				break;
+			}
+			case('m'):{
+				mapa[2][52]='A';
+				break;
+			}
+			case('n'):{
+				mapa[2][57]='A';
+				break;
+			}
+			case('o'):{
+				mapa[3][63]='A';
+				break;
+			}
+			case('p'):{
+				mapa[5][57]='A';
+				break;
+			}
+			case('q'):{
+				mapa[6][66]='A';
+				break;
+			}
+			case('r'):{
+				mapa[8][55]='A';
+				break;
+			}
+			case('s'):{
+				mapa[11][56]='A';
+				break;
+			}
+			case('t'):{
+				mapa[11][69]='A';
+				break;
+			}
+			
+		}
+	}
+	for(x=0;x<strlen(paisesj2);x++){
+		switch(paisesj2[x]){
+			case('a'):{
+				mapa[1][5]='B';
+				break;
+			}
+			case('b'):{
+				mapa[4][3]='B';
+				break;
+			}
+			case('c'):{
+				mapa[4][9]='B';
+				break;
+			}
+			case('d'):{
+				mapa[7][6]='B';
+				break;
+			}
+			case('e'):{
+				mapa[10][9]='B';
+				break;
+			}
+			case('f'):{
+				mapa[2][28]='B';
+				break;
+			}
+			case('g'):{
+				mapa[2][38]='B';
+				break;
+			}
+			case('h'):{
+				mapa[4][33]='B';
+				break;
+			}
+			case('i'):{
+				mapa[7][36]='B';
+				break;
+			}
+			case('j'):{
+				mapa[13][24]='B';
+				break;
+			}
+			case('k'):{
+				mapa[12][29]='B';
+				break;
+			}
+			case('l'):{
+				mapa[13][34]='B';
+				break;
+			}
+			case('m'):{
+				mapa[2][52]='B';
+				break;
+			}
+			case('n'):{
+				mapa[2][57]='B';
+				break;
+			}
+			case('o'):{
+				mapa[3][63]='B';
+				break;
+			}
+			case('p'):{
+				mapa[5][57]='B';
+				break;
+			}
+			case('q'):{
+				mapa[6][66]='B';
+				break;
+			}
+			case('r'):{
+				mapa[8][55]='B';
+				break;
+			}
+			case('s'):{
+				mapa[11][56]='B';
+				break;
+			}
+			case('t'):{
+				mapa[11][69]='B';
+				break;
+			}
+			
+		}
+	
 	}
 }
 
@@ -279,12 +477,9 @@ int checkfronteira(char pais_check, char pais_front){
 
 void sorteio_paises(char j1[], char j2[]){
 	int x,i=0;
-	srand((unsigned)time(NULL));
 	int y,p1=0,p2=0;
 	char jogo[21] = {"abcdefghijklmnopqrst"};
 		
-	
-	srand((unsigned)time(NULL));
 	for(i=0;i<20;i++){		
 	y=rand()%2;
 		
@@ -314,3 +509,79 @@ void sorteio_paises(char j1[], char j2[]){
 }	
 	
 }
+
+void jogador_nome(){
+	int y, i=0;
+	
+	printf("Jogador 1 digite seu nome de guerra: ");
+	scanf(" %[^\n]s", &nome_jogador1);
+	
+	printf("Jogador 2 digite seu nome de guerra: ");
+	scanf(" %[^\n]s", &nome_jogador2);
+
+}
+
+void sorteio_dados( int atk[], int dsf[]){
+	int x,y, aux;
+
+	for(x=0;x<3;x++){
+		atk[x] = 1+rand()%6;
+	}
+
+	for(x=0;x<3;x++){
+		dsf[x] = 1+rand()%6;
+	}
+	printf("ataque\tdefesa\n");
+	for(x=0;x<3;x++){
+		for(y=0;y<3;y++){
+			if(y>x){
+				if(atk[x]<atk[y]){
+					aux = atk[x];
+					atk[x] = atk[y];
+					atk[y] = aux;
+				}
+				if(dsf[x]<dsf[y]){
+					aux = dsf[x];
+					dsf[x] = dsf[y];
+					dsf[y] = aux;
+				}
+			}
+		}
+	}
+	for(x=0;x<3;x++){
+		printf("%d\t%d\n",atk[x],dsf[x]);
+		}	
+}
+
+void somar_tropas(){
+	mapa[2][6] = (char)((int)mapa[2][6] + tropastotais[0]);
+	while(mapa[2][6]>= ':'|| mapa[2][6]<='/'){
+		mapa[2][6] = (char)((int)mapa[2][6] - 10);
+		mapa[2][5] = (char)((int)mapa[2][5] + 1);
+	}
+	while(mapa[2][5]>=':'|| mapa[2][5]<='/'){
+		mapa[2][5] = (char)((int)mapa[2][5] - 10);
+		mapa[2][4] = (char)((int)mapa[2][4] + 1);
+	}	
+	mapa[5][4] = (char)((int)mapa[5][4] + tropastotais[1]);
+	mapa[5][10] = (char)((int)mapa[5][10] + tropastotais[2]);
+	mapa[8][7] = (char)((int)mapa[8][7] + tropastotais[3]);
+	mapa[11][10] = (char)((int)mapa[11][10] + tropastotais[4]);
+	mapa[3][29] = (char)((int)mapa[3][29] + tropastotais[5]);
+	mapa[3][39] = (char)((int)mapa[3][39] + tropastotais[6]);
+	mapa[5][34] = (char)((int)mapa[5][34] + tropastotais[7]);
+	mapa[8][37] = (char)((int)mapa[8][37] + tropastotais[8]);
+	mapa[14][25] = (char)((int)mapa[14][25] + tropastotais[9]);
+	mapa[13][30] = (char)((int)mapa[13][30] + tropastotais[10]);
+	mapa[14][35] = (char)((int)mapa[14][35] + tropastotais[11]);
+	mapa[3][53] = (char)((int)mapa[3][53] + tropastotais[12]);
+	mapa[3][58] = (char)((int)mapa[3][58] + tropastotais[13]);
+	mapa[4][64] = (char)((int)mapa[4][64] + tropastotais[14]);
+	mapa[6][58] = (char)((int)mapa[6][58] + tropastotais[15]);
+	mapa[7][67] = (char)((int)mapa[7][67] + tropastotais[16]);
+	mapa[9][56] = (char)((int)mapa[9][56] + tropastotais[17]);
+	mapa[12][57] = (char)((int)mapa[12][57] + tropastotais[18]);
+	mapa[12][70] = (char)((int)mapa[12][70] + tropastotais[19]);
+
+}
+
