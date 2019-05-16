@@ -1,58 +1,41 @@
-#include<stdio.h>
-#include<time.h>
-#include<string.h>
-void sorteio_dados(int numtropas1, int numtropas2, char dados_atk[], char dados_def[]){
-	int dados1, dados2, x,y,z,aux;
-	
-	int atk[3] ={}, dsf[3]={};
-	z=strlen(dados_atk);
-for(x=0;x<z;x++){
-	y=1+rand()%6;
-	
-	atk[x] = y;
-	
-	
-	
-}
-z=strlen(dados_def);
-	for(x=0;x<z;x++){
-		y=1+rand()%6;
-	
-	dsf[x] = y;
-		
+#include <time.h>
+#include <stdio.h>
+
+void sorteio_dados( int atk[], int dsf[]){
+	int x,y, aux;
+
+	for(x=0;x<3;x++){
+		atk[x] = 1+rand()%6;
 	}
-	for(x=0;x<6;x++){
-		for(y=0;y<6;y++){
-			if(atk[x]<atk[y]){
-				aux = atk[x];
-				atk[x] = atk[y];
-				atk[y] = aux;
-			}
-			if(dsf[x]<dsf[y]){
-				aux = dsf[x];
-				dsf[x] = dsf[y];
-				dsf[y] = aux;
-			}
-		}
-	
+
+	for(x=0;x<3;x++){
+		dsf[x] = 1+rand()%6;
 	}
 	printf("ataque\tdefesa\n");
-	
+	for(x=0;x<3;x++){
+		for(y=0;y<3;y++){
+			if(y>x){
+				if(atk[x]<atk[y]){
+					aux = atk[x];
+					atk[x] = atk[y];
+					atk[y] = aux;
+				}
+				if(dsf[x]<dsf[y]){
+					aux = dsf[x];
+					dsf[x] = dsf[y];
+					dsf[y] = aux;
+				}
+			}
+		}
+	}
 	for(x=0;x<3;x++){
 		printf("%d\t%d\n",atk[x],dsf[x]);
-	}
-	
-	
-	
-	
+		}	
 }
+
 int main(){
 	srand((unsigned)time(NULL));
-	int numt1, numt2; 
-	char dadoa[10]="abc", dadod[10]="abc";
-
-	int y;
-	sorteio_dados(numt1, numt2,dadoa,dadod);
-
-	return 0;
-}
+ 	int a=0,b=0, ddatk[3]={1,2,3}, dddfs[3]={1,2,3};
+ 	sorteio_dados(ddatk,dddfs);
+ 	return 0;
+ }
