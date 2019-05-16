@@ -5,7 +5,7 @@
 
 void nome_jogador(){
 	int y, i=0;
-	char jogador1[25], jogador2[25];
+	char jogador1[26], jogador2[26];
 	printf("Jogador 1 digite seu nome de guerra: ");
 	scanf("%s", &jogador1);
 	printf("Jogador 2 digite seu nome de guerra: ");
