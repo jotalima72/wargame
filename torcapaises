@@ -5,69 +5,72 @@ void troca_pais(char paisganha[], char paisperde[]){
 	char pais;
 int i;
 	scanf("%c",&pais);
+	pais = tolower(pais);
 	for(i=0;i<1;i++){
 
 	switch (pais){
-	case 'A':
+	case 'a':
 		strcat(paisganha,"A");
 		break;
-	case 'B':
+	case 'b':
 		strcat(paisganha,"B");
 		break;
-	case 'C':
+	case 'c':
 		strcat(paisganha,"C");
 		break;
-	case 'D':
+	case 'd':
 		strcat(paisganha,"D");
 		break;
-			case 'E':
+			case 'e':
 		strcat(paisganha,"E");
 		break;
-			case 'F':
+			case 'f':
 		strcat(paisganha,"F");
 		break;
-			case 'G':
+			case 'g':
 		strcat(paisganha,"G");
 		break;
-		case 'H':
+		case 'h':
 		strcat(paisganha,"H");
 		break;
-		case 'I':
+		case 'i':
 			strcat(paisganha,"I");
 			break;
 			
-		case 'J':
+		case 'j':
 			strcat(paisganha,"J");
 			break;
 
-		case 'K':
+		case 'k':
 			strcat(paisganha,"K");
 			break;
 
-		case 'L':
+		case 'l':
 			strcat(paisganha,"L");
 			break;
-			case 'M':
+			case 'm':
 			strcat(paisganha,"M");
 			break;
 
-		case 'N':
+		case 'n':
 			strcat(paisganha,"N");
 			break;
-			case 'O':
+			case 'o':
 			strcat(paisganha,"O");
 			break;
-				case 'P':
+				case 'p':
 		strcat(paisganha,"P");
 		break;
-				case 'Q':
+				case 'q':
 		strcat(paisganha,"Q");
-		break;	case 'R':
+		break;	
+		case 'r':
 		strcat(paisganha,"R");
-		break;	case 'S':
+		break;	
+		case 's':
 		strcat(paisganha,"S");
 		break;	
-		case 'T':
+		case 't':
 		strcat(paisganha,"T");
 		break;
 			
