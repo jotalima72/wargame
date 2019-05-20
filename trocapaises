@@ -1,0 +1,108 @@
+#include<stdio.h>
+#include<string.h>
+
+void troca_pais(char paisganha[], char paisperde[],char pais){
+	int i, j;
+	char aux;
+	pais = tolower(pais);
+
+	switch (pais){
+		case 'a':
+			strcat(paisganha,"A");
+			break;
+		case 'b':
+			strcat(paisganha,"B");
+			break;
+		case 'c':
+			strcat(paisganha,"C");
+			break;
+		case 'd':
+			strcat(paisganha,"D");
+			break;
+		case 'e':
+			strcat(paisganha,"E");
+			break;
+		case 'f':
+			strcat(paisganha,"F");
+			break;
+		case 'g':
+			strcat(paisganha,"G");
+			break;
+		case 'h':
+			strcat(paisganha,"H");
+			break;
+		case 'i':
+			strcat(paisganha,"I");
+			break;
+		case 'j':
+			strcat(paisganha,"J");
+			break;
+		case 'k':
+			strcat(paisganha,"K");
+			break;
+		case 'l':
+			strcat(paisganha,"L");
+			break;
+		case 'm':
+			strcat(paisganha,"M");
+			break;
+		case 'n':
+			strcat(paisganha,"N");
+			break;
+		case 'o':
+			strcat(paisganha,"O");
+			break;
+		case 'p':
+			strcat(paisganha,"P");
+			break;
+		case 'q':
+			strcat(paisganha,"Q");
+			break;	
+		case 'r':
+			strcat(paisganha,"R");
+			break;	
+		case 's':
+			strcat(paisganha,"S");
+			break;	
+		case 't':
+			strcat(paisganha,"T");
+			break;
+	}
+	pais = toupper(pais);
+	for(i=0;i<20;i++){
+		if (pais == paisperde[i]){
+			paisperde[i] = 91;
+			break;
+		}
+	}
+	for(i=0;i<strlen(paisperde);i++){
+		for(j=0;j<strlen(paisperde);j++){
+			if(j>i){
+				if(paisperde[i] > paisperde[j]){
+					aux = paisperde[j];
+					paisperde[j] = paisperde[i];
+					paisperde[i] = aux;
+				}
+			}
+		}
+	}
+	paisperde[strlen(paisperde) - 1] = '\0';
+	
+}
+
+
+
+int main(){
+char paisg[20] = "ABCDEFG";
+char paisp[20] = "IHJKLMNO";
+char pais;
+
+scanf("%c",&pais);
+troca_pais(paisg, paisp, pais);
+printf(" pais que ganhou %s\n", paisg);
+printf("\n pais organizado %s \n", paisp); 
+	
+	
+	
+	return 0;
+}
