@@ -11,11 +11,11 @@ void sorteio_paises(char j1[], char j2[]);
 void muda_paises(char paisesj1[], char paisesj2[]);
 void jogador_nome();
 void sorteio_dados( int atk[], int dsf[]);
-void somar_tropas();
+void tropasmapa();
 
 char nome_jogador1[50], nome_jogador2[50];
 
-int tropastotais[20] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+int tropastotais[20] = {11,111,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11};
 
 char mapa[17][74] =  {{"_________________________________________________________________________"},
 					  {"|**#####                                                              **|"},
@@ -46,12 +46,11 @@ void printmapainicial(){
 	}
 }				
 
-
 void printmapa(){
 	int i,j;
 ;
 	system("cls");
-	somar_tropas();
+	tropasmapa();
 	printf("\tJogador A: %s\t X \t Jogador B: %s\n",nome_jogador1, nome_jogador2);		      
 	for (i=0;i<17;i++){
 		printf("\t");
@@ -553,7 +552,7 @@ void sorteio_dados( int atk[], int dsf[]){
 		}	
 }
 
-void somar_tropas(){
+void tropasmapa(){
 	mapa[2][6] = (char)((int)mapa[2][6] + tropastotais[0]);
 	while(mapa[2][6]>= ':'|| mapa[2][6]<='/'){
 		mapa[2][6] = (char)((int)mapa[2][6] - 10);
@@ -564,24 +563,177 @@ void somar_tropas(){
 		mapa[2][4] = (char)((int)mapa[2][4] + 1);
 	}	
 	mapa[5][4] = (char)((int)mapa[5][4] + tropastotais[1]);
+	while(mapa[5][4]>=':'|| mapa[5][4]<='/'){
+		mapa[5][4] = (char)((int)mapa[5][4] - 10);
+		mapa[5][3] = (char)((int)mapa[5][3] + 1);
+	}
+	while(mapa[5][3]>=':'|| mapa[5][3]<='/'){
+		mapa[5][3] = (char)((int)mapa[5][3] - 10);
+		mapa[5][2] = (char)((int)mapa[5][2] + 1);
+	}
 	mapa[5][10] = (char)((int)mapa[5][10] + tropastotais[2]);
+	while(mapa[5][10]>=':'|| mapa[5][10]<='/'){
+		mapa[5][10] = (char)((int)mapa[5][10] - 10);
+		mapa[5][9] = (char)((int)mapa[5][9] + 1);
+	}
+	while(mapa[5][9]>=':'|| mapa[5][9]<='/'){
+		mapa[5][9] = (char)((int)mapa[5][9] - 10);
+		mapa[5][8] = (char)((int)mapa[5][8] + 1);
+	}
 	mapa[8][7] = (char)((int)mapa[8][7] + tropastotais[3]);
+	while(mapa[8][7]>=':'|| mapa[8][7]<='/'){
+		mapa[8][7] = (char)((int)mapa[8][7] - 10);
+		mapa[8][6] = (char)((int)mapa[8][6] + 1);
+	}
+	while(mapa[8][6]>=':'|| mapa[8][6]<='/'){
+		mapa[8][6] = (char)((int)mapa[8][6] - 10);
+		mapa[8][5] = (char)((int)mapa[8][5] + 1);
+	}
 	mapa[11][10] = (char)((int)mapa[11][10] + tropastotais[4]);
+	while(mapa[11][10]>=':'|| mapa[11][10]<='/'){
+		mapa[11][10] = (char)((int)mapa[11][10] - 10);
+		mapa[11][9] = (char)((int)mapa[11][9] + 1);
+	}
+	while(mapa[11][9]>=':'|| mapa[11][9]<='/'){
+		mapa[11][9] = (char)((int)mapa[11][9] - 10);
+		mapa[11][8] = (char)((int)mapa[11][8] + 1);
+	}
 	mapa[3][29] = (char)((int)mapa[3][29] + tropastotais[5]);
+	while(mapa[3][29]>=':'|| mapa[3][29]<='/'){
+		mapa[3][29] = (char)((int)mapa[3][29] - 10);
+		mapa[3][28] = (char)((int)mapa[3][28] + 1);
+	}
+	while(mapa[3][28]>=':'|| mapa[3][28]<='/'){
+		mapa[3][28] = (char)((int)mapa[3][28] - 10);
+		mapa[3][27] = (char)((int)mapa[3][27] + 1);
+	}	
 	mapa[3][39] = (char)((int)mapa[3][39] + tropastotais[6]);
+	while(mapa[3][39]>=':'|| mapa[3][39]<='/'){
+		mapa[3][39] = (char)((int)mapa[3][39] - 10);
+		mapa[3][38] = (char)((int)mapa[3][38] + 1);
+	}
+	while(mapa[3][39]>=':'|| mapa[3][39]<='/'){
+		mapa[3][38] = (char)((int)mapa[3][38] - 10);
+		mapa[3][37] = (char)((int)mapa[3][37] + 1);
+	}
 	mapa[5][34] = (char)((int)mapa[5][34] + tropastotais[7]);
+	while(mapa[5][34]>=':'|| mapa[5][34]<='/'){
+		mapa[5][34] = (char)((int)mapa[5][34] - 10);
+		mapa[5][33] = (char)((int)mapa[5][33] + 1);
+	}
+	while(mapa[5][33]>=':'|| mapa[5][33]<='/'){
+		mapa[5][33] = (char)((int)mapa[5][33] - 10);
+		mapa[5][32] = (char)((int)mapa[5][32] + 1);
+	}
 	mapa[8][37] = (char)((int)mapa[8][37] + tropastotais[8]);
+	while(mapa[8][37]>=':'|| mapa[8][37]<='/'){
+		mapa[8][37] = (char)((int)mapa[8][37] - 10);
+		mapa[8][36] = (char)((int)mapa[8][36] + 1);
+	}
+	while(mapa[8][36]>=':'|| mapa[8][36]<='/'){
+		mapa[8][36] = (char)((int)mapa[8][36] - 10);
+		mapa[8][35] = (char)((int)mapa[8][35] + 1);
+	}
 	mapa[14][25] = (char)((int)mapa[14][25] + tropastotais[9]);
+	while(mapa[14][25]>=':'|| mapa[14][25]<='/'){
+		mapa[14][25] = (char)((int)mapa[14][25] - 10);
+		mapa[14][24] = (char)((int)mapa[14][24] + 1);
+	}
+	while(mapa[14][24]>=':'|| mapa[14][24]<='/'){
+		mapa[14][24] = (char)((int)mapa[14][24] - 10);
+		mapa[14][23] = (char)((int)mapa[14][23] + 1);
+	}
 	mapa[13][30] = (char)((int)mapa[13][30] + tropastotais[10]);
+	while(mapa[13][30]>=':'|| mapa[13][30]<='/'){
+		mapa[13][30] = (char)((int)mapa[13][30] - 10);
+		mapa[13][29] = (char)((int)mapa[13][29] + 1);
+	}
+	while(mapa[13][29]>=':'|| mapa[13][29]<='/'){
+		mapa[13][29] = (char)((int)mapa[13][29] - 10);
+		mapa[13][28] = (char)((int)mapa[13][28] + 1);
+	}
 	mapa[14][35] = (char)((int)mapa[14][35] + tropastotais[11]);
+	while(mapa[14][35]>=':'|| mapa[14][35]<='/'){
+		mapa[14][35] = (char)((int)mapa[14][35] - 10);
+		mapa[14][34] = (char)((int)mapa[14][34] + 1);
+	}
+	while(mapa[14][34]>=':'|| mapa[14][34]<='/'){
+		mapa[14][34] = (char)((int)mapa[14][34] - 10);
+		mapa[14][33] = (char)((int)mapa[14][33] + 1);
+	}
+	
 	mapa[3][53] = (char)((int)mapa[3][53] + tropastotais[12]);
+	while(mapa[3][53]>=':'|| mapa[3][53]<='/'){
+		mapa[3][53] = (char)((int)mapa[3][53] - 10);
+		mapa[3][52] = (char)((int)mapa[3][52] + 1);
+	}
+	while(mapa[3][52]>=':'|| mapa[3][52]<='/'){
+		mapa[3][52] = (char)((int)mapa[3][52] - 10);
+		mapa[3][51] = (char)((int)mapa[3][51] + 1);
+	}
 	mapa[3][58] = (char)((int)mapa[3][58] + tropastotais[13]);
+	while(mapa[3][58]>=':'|| mapa[3][58]<='/'){
+		mapa[3][58] = (char)((int)mapa[3][58] - 10);
+		mapa[3][57] = (char)((int)mapa[3][57] + 1);
+	}
+	while(mapa[3][57]>=':'|| mapa[3][57]<='/'){
+		mapa[3][57] = (char)((int)mapa[3][57] - 10);
+		mapa[3][56] = (char)((int)mapa[3][56] + 1);
+	}
 	mapa[4][64] = (char)((int)mapa[4][64] + tropastotais[14]);
+	while(mapa[4][64]>=':'|| mapa[4][64]<='/'){
+		mapa[4][64] = (char)((int)mapa[4][64] - 10);
+		mapa[4][63] = (char)((int)mapa[4][63] + 1);
+	}
+	while(mapa[4][63]>=':'|| mapa[4][63]<='/'){
+		mapa[4][63] = (char)((int)mapa[4][63] - 10);
+		mapa[4][62] = (char)((int)mapa[4][62] + 1);
+	}
 	mapa[6][58] = (char)((int)mapa[6][58] + tropastotais[15]);
+	while(mapa[6][58]>=':'|| mapa[6][58]<='/'){
+		mapa[6][58] = (char)((int)mapa[6][58] - 10);
+		mapa[6][57] = (char)((int)mapa[6][57] + 1);
+	}
+	while(mapa[6][57]>=':'|| mapa[6][57]<='/'){
+		mapa[6][57] = (char)((int)mapa[6][57] - 10);
+		mapa[6][56] = (char)((int)mapa[6][56] + 1);
+	}
 	mapa[7][67] = (char)((int)mapa[7][67] + tropastotais[16]);
+	while(mapa[7][67]>=':'|| mapa[7][67]<='/'){
+		mapa[7][67] = (char)((int)mapa[7][67] - 10);
+		mapa[7][66] = (char)((int)mapa[7][66] + 1);
+	}
+	while(mapa[7][66]>=':'|| mapa[7][66]<='/'){
+		mapa[7][66] = (char)((int)mapa[7][66] - 10);
+		mapa[7][65] = (char)((int)mapa[7][65] + 1);
+	}
 	mapa[9][56] = (char)((int)mapa[9][56] + tropastotais[17]);
+	while(mapa[9][56]>=':'|| mapa[9][56]<='/'){
+		mapa[9][56] = (char)((int)mapa[9][56] - 10);
+		mapa[9][55] = (char)((int)mapa[9][55] + 1);
+	}
+	while(mapa[9][55]>=':'|| mapa[9][55]<='/'){
+		mapa[9][55] = (char)((int)mapa[9][55] - 10);
+		mapa[9][54] = (char)((int)mapa[9][54] + 1);
+	}
 	mapa[12][57] = (char)((int)mapa[12][57] + tropastotais[18]);
+	while(mapa[12][57]>=':'|| mapa[12][57]<='/'){
+		mapa[12][57] = (char)((int)mapa[12][57] - 10);
+		mapa[12][56] = (char)((int)mapa[12][56] + 1);
+	}
+	while(mapa[12][56]>=':'|| mapa[12][56]<='/'){
+		mapa[12][56] = (char)((int)mapa[12][56] - 10);
+		mapa[12][55] = (char)((int)mapa[12][55] + 1);
+	}
 	mapa[12][70] = (char)((int)mapa[12][70] + tropastotais[19]);
+	while(mapa[12][70]>=':'|| mapa[12][70]<='/'){
+		mapa[12][70] = (char)((int)mapa[12][70] - 10);
+		mapa[12][69] = (char)((int)mapa[12][69] + 1);
+	}
+	while(mapa[12][69]>=':'|| mapa[12][69]<='/'){
+		mapa[12][69] = (char)((int)mapa[12][69] - 10);
+		mapa[12][68] = (char)((int)mapa[12][68] + 1);
+	}
 
 }
 
