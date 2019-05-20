@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <time.h>
+#include <string.h>
+#include <stdlib.h>
+
+int tropastotais[20] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+void add_tropas(char paisesjog[], int numtropas){
+       char paisestotais[20] = "abcdefghijklmnopqrst";
+        char paisad;
+	   int i=0, existe, tropasdistrib;
+	while(numtropas >=0){
+	   	printf("vc tem %d tropas, selecione um pais:\n ", numtropas);
+	   	scanf(" %c", &paisad);
+	   	paisad = tolower(paisad);
+	   	
+	   	for(i=0;i<20;i++){
+	   		if(paisad == paisesjog[i]){
+	   			existe = 1;
+	   			break;
+			   }
+			else{
+				existe = 0;
+				printf("esse pais não e seu ou nao existe\n");
+				//system("cls");
+				break;
+			}
+		}
+	if(existe==1){
+		printf("selecione o numero de tropas que vai adicionar nesse pais:\n");
+		scanf("%d", &tropasdistrib);
+		if(tropasdistrib > numtropas){
+			printf("não é possivel fazer a operação, você tem menos tropas que %d", tropasdistrib);
+		}
+		else if(tropasdistrib <= 0){
+			printf("numero menor que zero, numero de tropas inexistente\n");
+		}
+		else{
+			for(i=0;i<20;i++){
+				if(paisad == paisestotais[i]){
+					break;
+				}
+			}
+		tropastotais[i] += tropasdistrib;
+		numtropas -= tropasdistrib;
+		}
+		
+		
+	}	
+   } 	
+	
+}
+
+int main(){
+	char jogador1 = "abcdefgh";
+	int j = strlen(jogador1);
+	printf("%d", j);
+	add_tropas(jogador1, strlen(jogador1)/2);
+	return 0;
+}
