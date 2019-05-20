@@ -1,0 +1,54 @@
+#include<stdio.h>
+#include<string.h>
+
+void troca_pais(char paisganha[10], char paisperde[10]){
+	char pais;
+int i;
+	scanf("%c",&pais);
+	for(i=0;i<1;i++){
+
+	switch (pais){
+	case 'H':
+		strcat(paisganha,"H");
+		break;
+		case 'I':
+			strcat(paisganha,"I");
+			break;
+			
+case 'J':
+			strcat(paisganha,"J");
+			break;
+
+case 'K':
+			strcat(paisganha,"K");
+			break;
+
+case 'L':
+			strcat(paisganha,"L");
+			break;
+			case 'M':
+			strcat(paisganha,"M");
+			break;
+
+case 'N':
+			strcat(paisganha,"N");
+			break;
+			case 'O':
+			strcat(paisganha,"O");
+			break;
+		}	
+	}		
+}
+
+
+
+int main(){
+char paisg[10] = "ABCDEFG";
+char paisp[10] = "HIJKLMNO";
+ troca_pais(paisg, paisp);
+ printf(" pais que ganhou %s", paisg);
+	
+	
+	
+	return 0;
+}
