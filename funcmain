@@ -6,11 +6,29 @@
 
 //programa
 int main(){
+	//characteres jogadores
+	char p1[20] = {};
+	char p2[20] = {};	
+	char letra;
 	//função para conseguir printar as letras 'ç' e acentos
 	setlocale(LC_ALL,"");
 	//criação de sementes para sorteio
 	srand((unsigned)time(NULL));
+	
 	//função para printar main
+	printmapainicial();
+	
+	//jogador_nome();      // registrar nome dos jogadores
+	sorteio_paises(p1,p2);  // sorteia os paises para cada jogador
+	muda_paises(p1,p2);    // altera  no mapa *tem que ser chamada sempre depois de uma alteração na string dos paises
+	Sleep(1000); // pausa *na compilação pode dar erro, não se preocupe
+	
+	add_tropas(p1, strlen(p1)/2); // faz a adição de tropas no pais desejado
+	printmapa(); // imprime mapa com os valores alterados pela adição feita anteriormente
+	Sleep(2000);
+	
+	muda_paises(p1,p2);
 	printmapa();
+
 	return 0;
 }
