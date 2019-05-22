@@ -4,20 +4,31 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
+#include <windows.h>
 
 void printmapa();
 int checkfronteira(char pais_check, char pais_front);
 void sorteio_paises(char j1[], char j2[]);
 void muda_paises(char paisesj1[], char paisesj2[]);
 void jogador_nome();
-void sorteio_dados( int atk[], int dsf[]);
+void sorteio_dados( int atk[], int dsf[], int t1, int t2);
 void soma_tropasmapa();
 void troca_pais(char paisganha[], char paisperde[],char pais);
 void add_tropas(char paisesjog[],  int numtropas);
+int vezdojogador_sorteio();
+void vezdojogador();
+void realocatropas(char paisg[],char paisp[], int ind_A, int ind_D);
 
 char nome_jogador1[50], nome_jogador2[50];
 
+char p1[20] = {};
+
+char p2[20] = {};
+
 int tropastotais[20] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+
+int vez = 0;
+int rodada = 1;
 
 char mapa[17][74] =  {{"_________________________________________________________________________"},
 					  {"|**#####                                                              **|"},
@@ -31,8 +42,8 @@ char mapa[17][74] =  {{"________________________________________________________
 			          {"|   #-D-#                        *#-I-#              #000#         *    |"},
 			          {"|      #####                     *                   #-R-#         *    |"},
 			          {"|      #000#                   ***                    #####        #####|"},
-			          {"|      #-E-#************   #####                      #000#        #000#|"},
-			          {"|                     ######000######*****************#-S-#        #-T-#|"},
+			          {"|      #-E-#*********      #####                      #000#        #000#|"},
+			          {"|                   **######000######*****************#-S-#        #-T-#|"},
 			          {"|                     #000##-K-##000#                     ***********   |"},
 			          {"|                     #-J-#     #-L-#                                   |"},
 					  {"|_______________________________________________________________________|"}};
@@ -50,10 +61,13 @@ void printmapainicial(){
 	Sleep(1000);
 }				
 
+
 void printmapa(){
 	int i,j;
 	system("cls");
+	
 	soma_tropasmapa();
+	printf("\t\tRODADA %d\n", rodada);
 	printf("\tJogador A: %s\t X \t Jogador B: %s\n",nome_jogador1, nome_jogador2);		      
 	for (i=0;i<17;i++){
 		printf("\t");
@@ -62,6 +76,7 @@ void printmapa(){
 		}
 		printf("\n");
 	}
+	vezdojogador();
 }
 
 void muda_paises(char paisesj1[], char paisesj2[]){
@@ -295,7 +310,7 @@ int checkfronteira(char pais_check, char pais_front){
 			break;
 		}
 		case('e'):{
-			strcpy(conjunto_paises,"dk");
+			strcpy(conjunto_paises,"dj");
 			for(i=0;i<strlen(conjunto_paises); i++){
 				if(pais_front== conjunto_paises[i]){
 					return 1;
@@ -520,20 +535,48 @@ void jogador_nome(){
 	
 	printf("Jogador 2 digite seu nome de guerra: ");
 	scanf(" %[^\n]s", &nome_jogador2);
-
 }
 
-void sorteio_dados( int atk[], int dsf[]){
+void sorteio_dados( int atk[], int dsf[], int t1, int t2){
 	int x,y, aux;
-
-	for(x=0;x<3;x++){
-		atk[x] = 1+rand()%6;
+	if(t1>=3){
+		for(x=0;x<3;x++){
+			atk[x] = 1+rand()%6;
+		}
 	}
-
-	for(x=0;x<3;x++){
-		dsf[x] = 1+rand()%6;
+	if(t1==2){
+		for(x=0;x<2;x++){
+			atk[x] = 1+rand()%6;
+			atk[3] = '\0';
+		}
 	}
-	printf("ataque\tdefesa\n");
+	if(t1==1){
+		for(x=0;x<1;x++){
+			atk[x] = 1+rand()%6;
+			atk[2] = '\0';
+			atk[3] = '\0';
+		}
+	}
+	if(t2>=3){
+		for(x=0;x<3;x++){
+			dsf[x] = 1+rand()%6;
+		}
+	}
+	if(t2==2){
+		for(x=0;x<2;x++){
+			dsf[x] = 1+rand()%6;
+			dsf[2] = '\0';
+		}
+	}
+	if(t2==1){
+		for(x=0;x<1;x++){
+			dsf[x] = 1+rand()%6;
+			dsf[2] = '\0';
+			dsf[1] = '\0';
+		}
+	}
+	
+	printf("Ataque\tDefesa\n");
 	for(x=0;x<3;x++){
 		for(y=0;y<3;y++){
 			if(y>x){
@@ -549,236 +592,271 @@ void sorteio_dados( int atk[], int dsf[]){
 				}
 			}
 		}
-	}
-	for(x=0;x<3;x++){
-		printf("%d\t%d\n",atk[x],dsf[x]);
-		}	
+	}	
 }
 
 void soma_tropasmapa(){
-	 char i = '0';
-	i = mapa[2][6];
-	mapa[2][6] = (char)((int)mapa[2][6] + tropastotais[0]); // pais A
-	mapa[2][6] -= i+208;
-	while(mapa[2][6]>= ':'|| mapa[2][6]<='/'){
-		mapa[2][6] = (char)((int)mapa[2][6] - 10);
-		mapa[2][5] = (char)((int)mapa[2][5] + 1);
+	int u, d, c;
+									//0	// pais A
+	c=(tropastotais[0]/100) + 48;
+	d=((tropastotais[0]%100)/10) + 48;
+	u=(tropastotais[0]%10) + 48;
+	if((int)mapa[2][6]!=  u){
+	mapa[2][6] = (char)u; 
 	}
-	while(mapa[2][5]>=':'|| mapa[2][5]<='/'){
-		mapa[2][5] = (char)((int)mapa[2][5] - 10);
-		mapa[2][4] = (char)((int)mapa[2][4] + 1);
-	}	
-
-	i = mapa[5][4];
-	mapa[5][4] = (char)((int)mapa[5][4] + tropastotais[1]); // pais B
-	mapa[5][4] -= i+208;
-	while(mapa[5][4]>=':'|| mapa[5][4]<='/'){
-		mapa[5][4] = (char)((int)mapa[5][4] - 10);
-		mapa[5][3] = (char)((int)mapa[5][3] + 1);
+	if((int)mapa[2][5]!= d){
+	mapa[2][5]= (char)d;
 	}
-	while(mapa[5][3]>=':'|| mapa[5][3]<='/'){
-		mapa[5][3] = (char)((int)mapa[5][3] - 10);
-		mapa[5][2] = (char)((int)mapa[5][2] + 1);
+	if((int)mapa[2][4]!= c){
+	mapa[2][4]= (char)c;
 	}
-	i = mapa[5][10];
-	mapa[5][10] = (char)((int)mapa[5][10] + tropastotais[2]); // pais C
-	mapa[5][10] -= i+208;
-	while(mapa[5][10]>=':'|| mapa[5][10]<='/'){
-		mapa[5][10] = (char)((int)mapa[5][10] - 10);
-		mapa[5][9] = (char)((int)mapa[5][9] + 1);
+									//1	//pais B
+	c=(tropastotais[1]/100) + 48;
+	d=((tropastotais[1]%100)/10) + 48;
+	u=(tropastotais[1]%10) + 48;
+	if((int)mapa[5][4]!=  u){
+	mapa[5][4] = (char)u; 
 	}
-	while(mapa[5][9]>=':'|| mapa[5][9]<='/'){
-		mapa[5][9] = (char)((int)mapa[5][9] - 10);
-		mapa[5][8] = (char)((int)mapa[5][8] + 1);
+	if((int)mapa[5][3]!= d){
+	mapa[5][3]= (char)d;
 	}
-	i = mapa[8][7];
-	mapa[8][7] = (char)((int)mapa[8][7] + tropastotais[3]); // pais D
-	mapa[8][7] -= i+208;
-	while(mapa[8][7]>=':'|| mapa[8][7]<='/'){
-		mapa[8][7] = (char)((int)mapa[8][7] - 10);
-		mapa[8][6] = (char)((int)mapa[8][6] + 1);
+	if((int)mapa[5][2]!= c){
+	mapa[5][2]= (char)c;
 	}
-	while(mapa[8][6]>=':'|| mapa[8][6]<='/'){
-		mapa[8][6] = (char)((int)mapa[8][6] - 10);
-		mapa[8][5] = (char)((int)mapa[8][5] + 1);
+									//2	//pais C
+	c=(tropastotais[2]/100) + 48;
+	d=((tropastotais[2]%100)/10) + 48;
+	u=(tropastotais[2]%10) + 48;
+	if((int)mapa[5][10]!=  u){
+	mapa[5][10] = (char)u; 
 	}
-	i = mapa[11][10];
-	mapa[11][10] = (char)((int)mapa[11][10] + tropastotais[4]); // pais E
-	mapa[11][10] -= i+208;
-	while(mapa[11][10]>=':'|| mapa[11][10]<='/'){
-		mapa[11][10] = (char)((int)mapa[11][10] - 10);
-		mapa[11][9] = (char)((int)mapa[11][9] + 1);
+	if((int)mapa[5][9]!= d){
+	mapa[5][9]= (char)d;
 	}
-	while(mapa[11][9]>=':'|| mapa[11][9]<='/'){
-		mapa[11][9] = (char)((int)mapa[11][9] - 10);
-		mapa[11][8] = (char)((int)mapa[11][8] + 1);
+	if((int)mapa[5][8]!= c){
+	mapa[5][8]= (char)c;
 	}
-	i = mapa[3][29];
-	mapa[3][29] = (char)((int)mapa[3][29] + tropastotais[5]); // pais F
-	mapa[3][29] -= i +208;
-	while(mapa[3][29]>=':'|| mapa[3][29]<='/'){
-		mapa[3][29] = (char)((int)mapa[3][29] - 10);
-		mapa[3][28] = (char)((int)mapa[3][28] + 1);
+									//3	//pais D
+	c=(tropastotais[3]/100) + 48;
+	d=((tropastotais[3]%100)/10) + 48;
+	u=(tropastotais[3]%10) + 48;
+	if((int)mapa[8][7]!=  u){
+	mapa[8][7] = (char)u; 
 	}
-	while(mapa[3][28]>=':'|| mapa[3][28]<='/'){
-		mapa[3][28] = (char)((int)mapa[3][28] - 10);
-		mapa[3][27] = (char)((int)mapa[3][27] + 1);
+	if((int)mapa[8][6]!= d){
+	mapa[8][6]= (char)d;
 	}
-	i = mapa[3][39];	
-	mapa[3][39] = (char)((int)mapa[3][39] + tropastotais[6]); // pais G
-	mapa[3][39] -= i + 208;
-	while(mapa[3][39]>=':'|| mapa[3][39]<='/'){
-		mapa[3][39] = (char)((int)mapa[3][39] - 10);
-		mapa[3][38] = (char)((int)mapa[3][38] + 1);
+	if((int)mapa[8][5]!= c){
+	mapa[8][5]= (char)c;
 	}
-	while(mapa[3][39]>=':'|| mapa[3][39]<='/'){
-		mapa[3][38] = (char)((int)mapa[3][38] - 10);
-		mapa[3][37] = (char)((int)mapa[3][37] + 1);
+									//4	//pais E
+	c=(tropastotais[4]/100) + 48;
+	d=((tropastotais[4]%100)/10) + 48;
+	u=(tropastotais[4]%10) + 48;
+	if((int)mapa[11][10]!=  u){
+	mapa[11][10] = (char)u; 
 	}
-	i = mapa[5][34];
-	mapa[5][34] = (char)((int)mapa[5][34] + tropastotais[7]); // pais H
-	mapa[5][34] -= i + 208;
-	while(mapa[5][34]>=':'|| mapa[5][34]<='/'){
-		mapa[5][34] = (char)((int)mapa[5][34] - 10);
-		mapa[5][33] = (char)((int)mapa[5][33] + 1);
+	if((int)mapa[11][9]!= d){
+	mapa[11][9]= (char)d;
 	}
-	while(mapa[5][33]>=':'|| mapa[5][33]<='/'){
-		mapa[5][33] = (char)((int)mapa[5][33] - 10);
-		mapa[5][32] = (char)((int)mapa[5][32] + 1);
+	if((int)mapa[11][8]!= c){
+	mapa[11][8]= (char)c;
 	}
-	i = mapa[8][37];
-	mapa[8][37] = (char)((int)mapa[8][37] + tropastotais[8]); // pais I
-	mapa[8][37] -= i+208;
-	while(mapa[8][37]>=':'|| mapa[8][37]<='/'){
-		mapa[8][37] = (char)((int)mapa[8][37] - 10);
-		mapa[8][36] = (char)((int)mapa[8][36] + 1);
+									//5	//pais F
+	c=(tropastotais[5]/100) + 48;
+	d=((tropastotais[5]%100)/10) + 48;
+	u=(tropastotais[5]%10) + 48;
+	if((int)mapa[3][29]!=  u){
+	mapa[3][29] = (char)u; 
 	}
-	while(mapa[8][36]>=':'|| mapa[8][36]<='/'){
-		mapa[8][36] = (char)((int)mapa[8][36] - 10);
-		mapa[8][35] = (char)((int)mapa[8][35] + 1);
+	if((int)mapa[2][27]!= d){
+	mapa[3][28]= (char)d;
 	}
-	i = mapa[14][25];
-	mapa[14][25] = (char)((int)mapa[14][25] + tropastotais[9]); // pais J
-	mapa[14][25] -= i + 208;
-	while(mapa[14][25]>=':'|| mapa[14][25]<='/'){
-		mapa[14][25] = (char)((int)mapa[14][25] - 10);
-		mapa[14][24] = (char)((int)mapa[14][24] + 1);
+	if((int)mapa[2][26]!= c){
+	mapa[3][27]= (char)c;
 	}
-	while(mapa[14][24]>=':'|| mapa[14][24]<='/'){
-		mapa[14][24] = (char)((int)mapa[14][24] - 10);
-		mapa[14][23] = (char)((int)mapa[14][23] + 1);
+									//6	//pais G
+	c=(tropastotais[6]/100) + 48;
+	d=((tropastotais[6]%100)/10) + 48;
+	u=(tropastotais[6]%10) + 48;
+	if((int)mapa[3][39]!=  u){
+	mapa[3][39] = (char)u; 
 	}
-	i = mapa[13][30];
-	mapa[13][30] = (char)((int)mapa[13][30] + tropastotais[10]); // pais K
-	mapa[13][30] -= i + 208;
-	while(mapa[13][30]>=':'|| mapa[13][30]<='/'){
-		mapa[13][30] = (char)((int)mapa[13][30] - 10);
-		mapa[13][29] = (char)((int)mapa[13][29] + 1);
+	if((int)mapa[3][38]!= d){
+	mapa[3][38]= (char)d;
 	}
-	while(mapa[13][29]>=':'|| mapa[13][29]<='/'){
-		mapa[13][29] = (char)((int)mapa[13][29] - 10);
-		mapa[13][28] = (char)((int)mapa[13][28] + 1);
+	if((int)mapa[3][37]!= c){
+	mapa[3][37]= (char)c;
 	}
-	i = mapa[14][35];
-	mapa[14][35] = (char)((int)mapa[14][35] + tropastotais[11]); // pais L
-	mapa[14][35] -= i + 208;
-	while(mapa[14][35]>=':'|| mapa[14][35]<='/'){
-		mapa[14][35] = (char)((int)mapa[14][35] - 10);
-		mapa[14][34] = (char)((int)mapa[14][34] + 1);
+										//7	//pais H
+	c=(tropastotais[7]/100) + 48;
+	d=((tropastotais[7]%100)/10) + 48;
+	u=(tropastotais[7]%10) + 48;
+	if((int)mapa[5][34]!=  u){
+	mapa[5][34] = (char)u; 
 	}
-	while(mapa[14][34]>=':'|| mapa[14][34]<='/'){
-		mapa[14][34] = (char)((int)mapa[14][34] - 10);
-		mapa[14][33] = (char)((int)mapa[14][33] + 1);
+	if((int)mapa[5][33]!= d){
+	mapa[5][33]= (char)d;
 	}
-	i=mapa[3][53];
-	mapa[3][53] = (char)((int)mapa[3][53] + tropastotais[12]); //pais M
-	mapa[3][53] -= i+208;
-	while(mapa[3][53]>=':'|| mapa[3][53]<='/'){
-		mapa[3][53] = (char)((int)mapa[3][53] - 10);
-		mapa[3][52] = (char)((int)mapa[3][52] + 1);
+	if((int)mapa[5][32]!= c){
+	mapa[5][32]= (char)c;
 	}
-	while(mapa[3][52]>=':'|| mapa[3][52]<='/'){
-		mapa[3][52] = (char)((int)mapa[3][52] - 10);
-		mapa[3][51] = (char)((int)mapa[3][51] + 1);
+											//8	//pais I
+	c=(tropastotais[8]/100) + 48;
+	d=((tropastotais[8]%100)/10) + 48;
+	u=(tropastotais[8]%10) + 48;
+	if((int)mapa[8][37]!=  u){
+	mapa[8][37] = (char)u; 
 	}
-	i= mapa[3][58];
-	mapa[3][58] = (char)((int)mapa[3][58] + tropastotais[13]); //pais N
-	mapa[3][58] -= i+208;
-	while(mapa[3][58]>=':'|| mapa[3][58]<='/'){
-		mapa[3][58] = (char)((int)mapa[3][58] - 10);
-		mapa[3][57] = (char)((int)mapa[3][57] + 1);
+	if((int)mapa[8][36]!= d){
+	mapa[8][36]= (char)d;
 	}
-	while(mapa[3][57]>=':'|| mapa[3][57]<='/'){
-		mapa[3][57] = (char)((int)mapa[3][57] - 10);
-		mapa[3][56] = (char)((int)mapa[3][56] + 1);
+	if((int)mapa[8][35]!= c){
+	mapa[8][35]= (char)c;
 	}
-	i=mapa[4][64];
-	mapa[4][64] = (char)((int)mapa[4][64] + tropastotais[14]); //pais O
-	mapa[4][64] -= i +208;
-	while(mapa[4][64]>=':'|| mapa[4][64]<='/'){
-		mapa[4][64] = (char)((int)mapa[4][64] - 10);
-		mapa[4][63] = (char)((int)mapa[4][63] + 1);
+												//9	//pais J
+	c=(tropastotais[9]/100) + 48;
+	d=((tropastotais[9]%100)/10) + 48;
+	u=(tropastotais[9]%10) + 48;
+	if((int)mapa[14][25]!=  u){
+	mapa[14][25] = (char)u; 
 	}
-	while(mapa[4][63]>=':'|| mapa[4][63]<='/'){
-		mapa[4][63] = (char)((int)mapa[4][63] - 10);
-		mapa[4][62] = (char)((int)mapa[4][62] + 1);
+	if((int)mapa[14][24]!= d){
+	mapa[14][24]= (char)d;
 	}
-	i = mapa[6][58];
-	mapa[6][58] = (char)((int)mapa[6][58] + tropastotais[15]); //pais P
-	mapa[6][58] -= i+208;
-	while(mapa[6][58]>=':'|| mapa[6][58]<='/'){
-		mapa[6][58] = (char)((int)mapa[6][58] - 10);
-		mapa[6][57] = (char)((int)mapa[6][57] + 1);
+	if((int)mapa[14][23]!= c){
+	mapa[14][23]= (char)c;
 	}
-	while(mapa[6][57]>=':'|| mapa[6][57]<='/'){
-		mapa[6][57] = (char)((int)mapa[6][57] - 10);
-		mapa[6][56] = (char)((int)mapa[6][56] + 1);
+													//10	//pais K
+	c=(tropastotais[10]/100) + 48;
+	d=((tropastotais[10]%100)/10) + 48;
+	u=(tropastotais[10]%10) + 48;
+	if((int)mapa[13][30]!=  u){
+	mapa[13][30] = (char)u; 
 	}
-	i = mapa[7][67];
-	mapa[7][67] = (char)((int)mapa[7][67] + tropastotais[16]); // pais Q
-	mapa[7][67] -= i + 208;
-	while(mapa[7][67]>=':'|| mapa[7][67]<='/'){
-		mapa[7][67] = (char)((int)mapa[7][67] - 10);
-		mapa[7][66] = (char)((int)mapa[7][66] + 1);
+	if((int)mapa[13][29]!= d){
+	mapa[13][29]= (char)d;
 	}
-	while(mapa[7][66]>=':'|| mapa[7][66]<='/'){
-		mapa[7][66] = (char)((int)mapa[7][66] - 10);
-		mapa[7][65] = (char)((int)mapa[7][65] + 1);
+	if((int)mapa[13][28]!= c){
+	mapa[13][28] = (char)c;
 	}
-	i = mapa[9][56];
-	mapa[9][56] = (char)((int)mapa[9][56] + tropastotais[17]); //pais R
-	mapa[9][56] -= i + 208;
-	while(mapa[9][56]>=':'|| mapa[9][56]<='/'){
-		mapa[9][56] = (char)((int)mapa[9][56] - 10);
-		mapa[9][55] = (char)((int)mapa[9][55] + 1);
+													//11	//pais L
+	c=(tropastotais[11]/100) + 48;
+	d=((tropastotais[11]%100)/10) + 48;
+	u=(tropastotais[11]%10) + 48;
+	if((int)mapa[14][35]!=  u){
+	mapa[14][35] = (char)u; 
 	}
-	while(mapa[9][55]>=':'|| mapa[9][55]<='/'){
-		mapa[9][55] = (char)((int)mapa[9][55] - 10);
-		mapa[9][54] = (char)((int)mapa[9][54] + 1);
+	if((int)mapa[14][34]!= d){
+	mapa[14][34]= (char)d;
 	}
-	i=mapa[12][57];
-	mapa[12][57] = (char)((int)mapa[12][57] + tropastotais[18]); //pais S
-	mapa[12][57] -= i + 208;
-	while(mapa[12][57]>=':'|| mapa[12][57]<='/'){
-		mapa[12][57] = (char)((int)mapa[12][57] - 10);
-		mapa[12][56] = (char)((int)mapa[12][56] + 1);
+	if((int)mapa[14][33]!= c){
+	mapa[14][33] = (char)c;
 	}
-	while(mapa[12][56]>=':'|| mapa[12][56]<='/'){
-		mapa[12][56] = (char)((int)mapa[12][56] - 10);
-		mapa[12][55] = (char)((int)mapa[12][55] + 1);
+													//12	//pais M
+	c=(tropastotais[12]/100) + 48;
+	d=((tropastotais[12]%100)/10) + 48;
+	u=(tropastotais[12]%10) + 48;
+	if((int)mapa[3][53]!=  u){
+	mapa[3][53] = (char)u; 
 	}
-	i = mapa[12][70];
-	mapa[12][70] = (char)((int)mapa[12][70] + tropastotais[19]); //pais T
-	mapa[12][70] -= i + 208;
-	while(mapa[12][70]>=':'|| mapa[12][70]<='/'){
-		mapa[12][70] = (char)((int)mapa[12][70] - 10);
-		mapa[12][69] = (char)((int)mapa[12][69] + 1);
+	if((int)mapa[3][52]!= d){
+	mapa[3][52]= (char)d;
 	}
-	while(mapa[12][69]>=':'|| mapa[12][69]<='/'){
-		mapa[12][69] = (char)((int)mapa[12][69] - 10);
-		mapa[12][68] = (char)((int)mapa[12][68] + 1);
+	if((int)mapa[3][51]!= c){
+	mapa[3][51] = (char)c;
 	}
-
+													//13	//pais N
+	c=(tropastotais[13]/100) + 48;
+	d=((tropastotais[13]%100)/10) + 48;
+	u=(tropastotais[13]%10) + 48;
+	if((int)mapa[3][58]!=  u){
+	mapa[3][58] = (char)u; 
+	}
+	if((int)mapa[3][57]!= d){
+	mapa[3][57]= (char)d;
+	}
+	if((int)mapa[3][56]!= c){
+	mapa[3][56] = (char)c;
+	}
+													//14	//pais O
+	c=(tropastotais[14]/100) + 48;
+	d=((tropastotais[14]%100)/10) + 48;
+	u=(tropastotais[14]%10) + 48;
+	if((int)mapa[4][64]!=  u){
+	mapa[4][64] = (char)u; 
+	}
+	if((int)mapa[4][63]!= d){
+	mapa[4][63]= (char)d;
+	}
+	if((int)mapa[4][62]!= c){
+	mapa[4][62] = (char)c;
+	}
+													//15	//pais P
+	c=(tropastotais[15]/100) + 48;
+	d=((tropastotais[15]%100)/10) + 48;
+	u=(tropastotais[15]%10) + 48;
+	if((int)mapa[6][58]!=  u){
+	mapa[6][58] = (char)u; 
+	}
+	if((int)mapa[6][57]!= d){
+	mapa[6][57]= (char)d;
+	}
+	if((int)mapa[6][56]!= c){
+	mapa[6][56] = (char)c;
+	}
+													//16	//pais Q
+	c=(tropastotais[16]/100) + 48;
+	d=((tropastotais[16]%100)/10) + 48;
+	u=(tropastotais[16]%10) + 48;
+	if((int)mapa[7][67]!=  u){
+	mapa[7][67] = (char)u; 
+	}
+	if((int)mapa[7][66]!= d){
+	mapa[7][66]= (char)d;
+	}
+	if((int)mapa[7][65]!= c){
+	mapa[7][65] = (char)c;
+	}
+													//17	//pais R
+	c=(tropastotais[17]/100) + 48;
+	d=((tropastotais[17]%100)/10) + 48;
+	u=(tropastotais[17]%10) + 48;
+	if((int)mapa[9][56]!=  u){
+	mapa[9][56] = (char)u; 
+	}
+	if((int)mapa[9][55]!= d){
+	mapa[9][55]= (char)d;
+	}
+	if((int)mapa[9][54]!= c){
+	mapa[9][54] = (char)c;
+	}
+													//18	//pais S
+	c=(tropastotais[18]/100) + 48;
+	d=((tropastotais[18]%100)/10) + 48;
+	u=(tropastotais[18]%10) + 48;
+	if((int)mapa[12][57]!=  u){
+	mapa[12][57] = (char)u; 
+	}
+	if((int)mapa[12][56]!= d){
+	mapa[12][56]= (char)d;
+	}
+	if((int)mapa[12][55]!= c){
+	mapa[12][55] = (char)c;
+	}
+													//19	//pais T
+	c=(tropastotais[19]/100) + 48;
+	d=((tropastotais[19]%100)/10) + 48;
+	u=(tropastotais[19]%10) + 48;
+	if((int)mapa[12][70]!=  u){
+	mapa[12][70] = (char)u; 
+	}
+	if((int)mapa[12][69]!= d){
+	mapa[12][69]= (char)d;
+	}
+	if((int)mapa[12][68]!= c){
+	mapa[12][68] = (char)c;
+	}
 }
 
 void troca_pais(char paisganha[], char paisperde[],char pais){
@@ -872,10 +950,11 @@ void add_tropas(char paisesjog[],  int numtropas){
        char paisestotais[21] = "abcdefghijklmnopqrst";
         char paisad;
 	   int i=0, existe, tropasdistrib;
-	while(numtropas >0){
+	while(numtropas > 0){
 	   	printmapa();
+	   	existe = 0;
 	   	
-		printf("vc tem %d tropas, selecione um pais:\n ", numtropas);
+		printf("você tem %d tropas, selecione um país:\n", numtropas);
 	   	scanf(" %c", &paisad);
 	   	paisad = tolower(paisad);
 	   	
@@ -886,18 +965,18 @@ void add_tropas(char paisesjog[],  int numtropas){
 			   }
 		}
 	if(existe!=1){
-				printf("esse pais não e seu ou nao existe\n");
+				printf("Esse país não é seu ou não existe\n");
 				Sleep(1000);
 			}
 	if(existe==1){
-		printf("selecione o numero de tropas que vai adicionar nesse pais:\n");
-		scanf("%d", &tropasdistrib);
+		printf("Selecione o número de tropas que vai adicionar nesse país:\n");
+		scanf(" %d", &tropasdistrib);
 		if(tropasdistrib > numtropas){
-			printf("não é possivel fazer a operação, você tem menos tropas que %d\n", tropasdistrib);
+			printf("Não é possível fazer a operação, você tem menos tropas que %d\n", tropasdistrib);
 			Sleep(1000);
 		}
 		else if(tropasdistrib <= 0){
-			printf("numero menor que zero, numero de tropas inexistente\n");
+			printf("Número menor que zero, número de tropas inexistente\n");
 		}
 		else{
 			for(i=0;i<20;i++){
@@ -911,6 +990,167 @@ void add_tropas(char paisesjog[],  int numtropas){
 	}	
    } 	
 	
+}
+
+int vezdojogador_sorteio(){
+	int y;
+	
+	y=rand()%2;
+	if(y==0){
+		return 1;
+	}
+	else{
+		return 2;
+	}
+}
+
+void vezdojogador(){
+	if(vez%2==0){
+		printf("Vez do jogador: %s\n", nome_jogador1);
+	}
+	else{
+		printf("Vez do jogador: %s\n", nome_jogador2);
+	}
+	
+}
+
+int check_pais(char pais_ataque, char pj1[]){
+			int i;
+			for(i=0;i<strlen(pj1);i++){
+	   			if(pais_ataque == pj1[i])
+			   		return 1;
+	   	}
+	   	return 0;
+}
+
+void ataque(char paisJatk[], char paisJdfs[]){
+	char pais_ataque = '1', pais_defesa;
+	int check=0, i=0, j=0, aux=0;
+	int checkatk = 0, checkdfs = 0;
+	char paisesjog[] =  "abcdefghijklmnopqrst";
+	
+	
+	while(pais_ataque != '0'){
+		muda_paises(p1,p2);
+		soma_tropasmapa();
+		printmapa();
+		printf("Escolha o país a atacar ou 0 para pular o ataque: \n");
+		scanf(" %c", &pais_ataque);
+		pais_ataque = tolower(pais_ataque);
+		checkatk = check_pais(pais_ataque, paisJatk);
+		
+		if(checkatk==1){
+	
+			printf("Escolha o pais alvo: \n");
+			scanf(" %c", &pais_defesa);
+			pais_defesa = tolower(pais_defesa);
+			checkdfs = check_pais(pais_defesa, paisJdfs);
+			
+			if(checkdfs==1){
+				check = checkfronteira(pais_ataque, pais_defesa);
+				
+				if(check==1){
+					for(i=0;i<strlen(paisesjog);i++){
+		   				if(pais_ataque == paisesjog[i])break;
+				   	}
+				   	for(j=0;j<strlen(paisesjog);j++){
+				   		if(pais_defesa == paisesjog[j])break;
+					}
+					int dadosatk[3] = {0,0,0};
+					int dadosdfs[3] = {0,0,0};
+					if(tropastotais[i] - 1 >= 1 ){
+						sorteio_dados(dadosatk, dadosdfs,(tropastotais[i] - 1), tropastotais[j]);
+						for(aux=0;aux<3;aux++){
+							if(dadosatk[aux] > 0 && dadosdfs[aux] > 0){
+								printf("%d\t%d\t",dadosatk[aux],dadosdfs[aux]);
+								if(dadosdfs[aux]< dadosatk[aux]){
+									printf("Ataque ganha!\n");
+								}
+								else if(dadosdfs[aux]== dadosatk[aux]){
+									printf("Empate! Defesa ganha!\n");
+								}
+								else{
+									printf("Defesa ganha!\n");
+								}
+							}
+						}
+						for(aux = 0; aux< 3 ; aux++){
+							if(dadosatk[aux] > 0 && dadosdfs[aux] > 0){
+								if(dadosdfs[aux]< dadosatk[aux]){
+									tropastotais[j]-=1;
+									}
+								else{
+									tropastotais[i]-=1;
+								}
+							}
+						}
+						Sleep(2000);
+						if(tropastotais[j]<=0){
+							realocatropas(paisJatk, paisJdfs,i,j);
+							}
+					}
+					else{
+						printf("Número insuficiente de tropas para realizar o ataque\n");
+						Sleep(2000);
+					}
+				}	
+				else{
+					printf("Esses países não fazem fronteira\n");
+					Sleep(2000);
+				}
+			}
+			else{
+				printf("Você não pode atacar esse país\n");
+				Sleep(2000);
+			}
+		}
+		else if(checkatk != 0){
+			printf("Esse país não te pertence ou não existe\n");
+			Sleep(2000);
+		}
+	}
+}
+	
+void realocatropas(char paisg[],char paisp[], int ind_A, int ind_D){
+	char paises[] =  "abcdefghijklmnopqrst";
+	int trop = 1, tropastot;
+	tropastot = tropastotais[ind_A] - 1;
+	troca_pais(paisg,paisp, paises[ind_D]);
+	muda_paises(p1, p2);
+	tropastotais[ind_D] = 0;
+	while(trop!=0){
+		printmapa();
+		
+		printf("Parabéns! Você conquistou o país %c\n", paises[ind_D]);
+		printf(" Você tem %d tropas disponíveis\n", tropastot );
+		printf("Selecione o número de tropas para realocar para aquele país ou 0 para continuar\n");
+		scanf(" %d", &trop);
+		
+		if(trop==0){
+			if(tropastotais[ind_D] <= 0){
+				printf("Você não pode deixar o país desprotegido!\n");
+				Sleep(2000);
+				trop = 1;
+			}
+		}
+		if(trop > tropastot || trop < 0 && trop != 0){
+			printf("Número de tropas inválido\n");
+			Sleep(2000);
+		}
+		else{
+			if(tropastotais[ind_D] <= 0 ){
+				tropastotais[ind_D] = trop;
+			}
+			else{
+				tropastotais[ind_D] += trop;
+			}
+			tropastot -=trop;
+			tropastotais[ind_A] -=trop;
+		}
+		if(tropastot<=0){
+		break;
+		}
+	}
 }
 
 
