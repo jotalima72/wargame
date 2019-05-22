@@ -18,6 +18,7 @@ void add_tropas(char paisesjog[],  int numtropas);
 int vezdojogador_sorteio();
 void vezdojogador();
 void realocatropas(char paisg[],char paisp[], int ind_A, int ind_D);
+void printrodada();
 
 char nome_jogador1[50], nome_jogador2[50];
 
@@ -61,13 +62,43 @@ void printmapainicial(){
 	Sleep(1000);
 }				
 
+void printrodada(){
+	char string[76] ={"\t                                                                         \n"};
+	char rod[10] ={"RODADA "};
+	int u, d, aux, i=0;
+	char num[3] = "  ";
+	d=((rodada%100)/10) + 48;
+	u=(rodada%10) + 48;
+	if((int)num[1]!=  u){
+	num[1] = (char)u; 
+	}
+	if((int)num[0]!= d){
+	num[0] = (char)d;
+	}
+	num[2] = ' ';
+	num[3] = 'a';
+	strcat(rod,num);
+	rod[strlen(rod)-1] = '\0';
+	for(aux=0;aux<76;aux++){
+		if(aux<(38-(strlen(rod)/2))){
+			printf("%c", string[aux]);
+		}
+		else if(aux>=38-(strlen(rod)/2) && aux<(38-(strlen(rod)/2) + (strlen(rod)))){
+			printf("%c",rod[i]);
+			i++;
+		}
+		else{
+			printf("%c", string[aux]);
+		}
+	}
+}
 
 void printmapa(){
 	int i,j;
 	system("cls");
-	
+	printrodada();
 	soma_tropasmapa();
-	printf("\t\tRODADA %d\n", rodada);
+
 	printf("\tJogador A: %s\t X \t Jogador B: %s\n",nome_jogador1, nome_jogador2);		      
 	for (i=0;i<17;i++){
 		printf("\t");
@@ -977,6 +1008,7 @@ void add_tropas(char paisesjog[],  int numtropas){
 		}
 		else if(tropasdistrib <= 0){
 			printf("Número menor que zero, número de tropas inexistente\n");
+			Sleep(1000);
 		}
 		else{
 			for(i=0;i<20;i++){
@@ -1152,5 +1184,3 @@ void realocatropas(char paisg[],char paisp[], int ind_A, int ind_D){
 		}
 	}
 }
-
-
