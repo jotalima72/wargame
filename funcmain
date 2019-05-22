@@ -4,31 +4,59 @@
 #include <time.h> // biblioteca para sorteio de numeros
 #include "war1game.h" // biblioteca das funções do jogo
 
+
 //programa
 int main(){
 	//characteres jogadores
-	char p1[20] = {};
-	char p2[20] = {};	
-	char letra;
+	
+	int erro = 0;
 	//função para conseguir printar as letras 'ç' e acentos
 	setlocale(LC_ALL,"");
 	//criação de sementes para sorteio
-	srand((unsigned)time(NULL));
-	
+    srand((unsigned)time(NULL));
+	vez = vezdojogador_sorteio();
 	//função para printar main
 	printmapainicial();
 	
-	//jogador_nome();      // registrar nome dos jogadores
-	sorteio_paises(p1,p2);  // sorteia os paises para cada jogador
-	muda_paises(p1,p2);    // altera  no mapa *tem que ser chamada sempre depois de uma alteração na string dos paises
-	Sleep(1000); // pausa *na compilação pode dar erro, não se preocupe
-	
-	add_tropas(p1, strlen(p1)/2); // faz a adição de tropas no pais desejado
-	printmapa(); // imprime mapa com os valores alterados pela adição feita anteriormente
-	Sleep(2000);
-	
+	jogador_nome();
+	sorteio_paises(p1,p2);
 	muda_paises(p1,p2);
-	printmapa();
+	Sleep(1000);
+	while(strlen(p1)!=0  && strlen(p2) != 0){
+		if(vez%2==0){
+			add_tropas(p1, strlen(p1)/2);
+			
+			Sleep(2000);
+			if(rodada>1){
+				ataque(p1, p2);	
+				printmapa();
+			}
+			
+			erro++;
+		}
+		else{
+			add_tropas(p2, strlen(p2)/2);
+			
+			Sleep(2000);
+			if(rodada>1){
+				ataque(p2,p1);
+				printmapa();
+			}
+			
+			erro++;
+		}
+		
+		vez++;
+		if(erro%2==0)rodada++;
+	}
+	if(strlen(p1)==0){
+		printmapa();
+		printf("Parabéns %s!\nVocê conquistou o mundo!\n", nome_jogador2);
+	}
+	else{
+		printmapa();
+		printf("Parabéns %s!\nVocê conquistou o mundo!\n", nome_jogador1);
+	}
 
 	return 0;
 }
