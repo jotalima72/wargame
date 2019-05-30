@@ -19,6 +19,7 @@ int vezdojogador_sorteio();
 void vezdojogador();
 void realocatropas(char paisg[],char paisp[], int ind_A, int ind_D);
 void printrodada();
+void movimentacao(char jog[], char paisjog[]);
 
 char nome_jogador1[50], nome_jogador2[50];
 
@@ -31,23 +32,24 @@ int tropastotais[20] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
 int vez = 0;
 int rodada = 1;
 
-char mapa[17][74] =  {{"_________________________________________________________________________"},
-					  {"|**#####                                                              **|"},
-			          {"|  #000#******************#####     #####*********##########          * |"},
-			          {"|  #-A-#                  #000#     #000#         #000##000# #####***** |"},
-			          {"|##### #####             *#-F-#######-G-#         #-M-##-N-#*#000#      |"},
-			          {"|#000# #000#**************     #000#                   ##### #-O-#      |"},
-			          {"|#-B-# #-C-#                   #-H-#                   #000#    #####   |"},
-			          {"|   #####                         #####                #-P-#    #000#   |"},
-			          {"|   #000#                        *#000#              #####      #-Q-#   |"},
-			          {"|   #-D-#                        *#-I-#              #000#         *    |"},
-			          {"|      #####                     *                   #-R-#         *    |"},
-			          {"|      #000#                   ***                    #####        #####|"},
-			          {"|      #-E-#*********      #####                      #000#        #000#|"},
-			          {"|                   **######000######*****************#-S-#        #-T-#|"},
-			          {"|                     #000##-K-##000#                     ***********   |"},
-			          {"|                     #-J-#     #-L-#                                   |"},
-					  {"|_______________________________________________________________________|"}};
+char mapa[17][74] =  {
+{"_________________________________________________________________________"},
+{"|**#####                                                              **|"},
+{"|  #000#******************#####     #####*********##########          * |"},
+{"|  #-A-#                  #000#     #000#         #000##000# #####***** |"},
+{"|##### #####             *#-F-#######-G-#         #-M-##-N-#*#000#      |"},
+{"|#000# #000#**************     #000#                   ##### #-O-#      |"},
+{"|#-B-# #-C-#                   #-H-#                   #000#    #####   |"},
+{"|   #####                         #####                #-P-#    #000#   |"},
+{"|   #000#                        *#000#              #####      #-Q-#   |"},
+{"|   #-D-#                        *#-I-#              #000#         *    |"},
+{"|      #####                     *                   #-R-#         *    |"},
+{"|      #000#                   ***                    #####        #####|"},
+{"|      #-E-#*********      #####                      #000#        #000#|"},
+{"|                   **######000######*****************#-S-#        #-T-#|"},
+{"|                     #000##-K-##000#                     ***********   |"},
+{"|                     #-J-#     #-L-#                                   |"},
+{"|_______________________________________________________________________|"}};
 					  
 void printmapainicial(){
 	int i,j;
@@ -55,7 +57,6 @@ void printmapainicial(){
 		printf("\t");
 		for (j=0;j<74;j++){
 			printf("%c", mapa[i][j]);
-			Sleep(5);
 		}
 		printf("\n");
 	}
@@ -1105,7 +1106,20 @@ void ataque(char paisJatk[], char paisJdfs[]){
 									printf("Defesa ganha!\n");
 								}
 							}
+							else{
+								if(dadosatk[aux] == 0){
+									printf(" \t");
+								}
+								else{printf("%d\t", dadosatk[aux]);
+								}
+								if(dadosdfs[aux] == 0){
+									printf(" \n");
+								}else{
+									printf("%d\n",dadosdfs[aux]);
+								}
+							}
 						}
+								system("pause");
 						for(aux = 0; aux< 3 ; aux++){
 							if(dadosatk[aux] > 0 && dadosdfs[aux] > 0){
 								if(dadosdfs[aux]< dadosatk[aux]){
@@ -1142,7 +1156,7 @@ void ataque(char paisJatk[], char paisJdfs[]){
 		}
 	}
 }
-	
+
 void realocatropas(char paisg[],char paisp[], int ind_A, int ind_D){
 	char paises[] =  "abcdefghijklmnopqrst";
 	int trop = 1, tropastot;
@@ -1150,24 +1164,24 @@ void realocatropas(char paisg[],char paisp[], int ind_A, int ind_D){
 	troca_pais(paisg,paisp, paises[ind_D]);
 	muda_paises(p1, p2);
 	tropastotais[ind_D] = 0;
-	while(trop!=0){
+		inicio:
 		printmapa();
-		
-		printf("Parabéns! Você conquistou o país %c\n", paises[ind_D]);
+		printf("Parabéns! Você conquistou o país %c\n", toupper(paises[ind_D]));
 		printf(" Você tem %d tropas disponíveis\n", tropastot );
-		printf("Selecione o número de tropas para realocar para aquele país ou 0 para continuar\n");
+		printf("Selecione o número de tropas para realocar\n");
 		scanf(" %d", &trop);
 		
 		if(trop==0){
 			if(tropastotais[ind_D] <= 0){
 				printf("Você não pode deixar o país desprotegido!\n");
 				Sleep(2000);
-				trop = 1;
+				goto inicio;
 			}
 		}
 		if(trop > tropastot || trop < 0 && trop != 0){
 			printf("Número de tropas inválido\n");
 			Sleep(2000);
+			goto inicio;
 		}
 		else{
 			if(tropastotais[ind_D] <= 0 ){
@@ -1179,8 +1193,79 @@ void realocatropas(char paisg[],char paisp[], int ind_A, int ind_D){
 			tropastot -=trop;
 			tropastotais[ind_A] -=trop;
 		}
-		if(tropastot<=0){
-		break;
+	}
+
+
+
+void movimentacao(char jog[], char paisjog[]){
+	char yn, pais1, pais2, paises[] =  "abcdefghijklmnopqrst";
+	int tropas=0 , i=0, j=0;
+	printf("%s, Você deseja mover tropas?\n S para sim, N para não\n", jog);
+	scanf(" %c", &yn);
+	if(tolower(yn)=='s'){
+		inicio:
+		printmapa();
+		
+		printf("Escolha o país que deseja retirar as tropas:\n");
+		scanf(" %c", &pais1);
+		if(check_pais(pais1, paisjog)){
+			pais2:
+			printf("Escolha o país que deseja acrescentar as tropas:\n");
+			scanf(" %c", &pais2);
+			if(pais1!=pais2){
+				if(check_pais(pais2, paisjog)){
+					if(checkfronteira(pais1,pais2)){
+						for(i=0;i<strlen(paises);i++){
+							if(paises[i] == pais1)break;
+						}
+						printmapa();
+						if(tropastotais[i]>1){
+							printf("Quantas tropas você deseja mover?\nNumero de tropas disponiveis %d\n", tropastotais[i]-1);
+							scanf(" %d", &tropas);
+							if(tropas>tropastotais[i]-1 || tropas<=0){
+								printf("Número de tropas inválido\n");
+								goto inicio;
+							}
+							else{
+								for(j=0;j<strlen(paises);j++){
+									if(paises[j] == pais2)break;
+								}
+								tropastotais[i] -= tropas;
+								tropastotais[j] += tropas;
+								return;
+							}
+						}
+						else{
+							printf("Número de tropas insuficiente para movimentação\n");
+							Sleep(2000);
+							goto inicio;							
+						}
+					}
+					else{
+						printf("Esses países não fazem fronteira\n");
+						Sleep(2000);
+						goto inicio;
+					}
+				}
+				else{
+					printf("O país escolhido para receber as tropas não te pertence\n");
+					Sleep(2000);
+					goto inicio;
+				}
+			}
+			else{
+				printf("Você escolhue o mesmo país\n");
+				Sleep(2000);
+				goto pais2;
+			}
 		}
+		else{
+			printf("Esse país não te pertence\n");
+			Sleep(2000);
+			goto inicio;
+		}
+	}
+	else{
+		return;
 	}
 }
