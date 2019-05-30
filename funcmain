@@ -7,18 +7,19 @@
 
 //programa
 int main(){
-	//characteres jogadores
 	
 	int erro = 0;
 	//função para conseguir printar as letras 'ç' e acentos
 	setlocale(LC_ALL,"");
 	//criação de sementes para sorteio
     srand((unsigned)time(NULL));
+	//sortear quem inicia
 	vez = vezdojogador_sorteio();
-	//função para printar main
+	//função para printar mapa zerado
 	printmapainicial();
-	
+	// scanear os nomes dos jogadores
 	jogador_nome();
+	
 	sorteio_paises(p1,p2);
 	muda_paises(p1,p2);
 	Sleep(1000);
@@ -28,7 +29,10 @@ int main(){
 			
 			Sleep(2000);
 			if(rodada>1){
-				ataque(p1, p2);	
+				ataque(p1, p2);
+				
+				movimentacao(nome_jogador1, p1);
+				
 				printmapa();
 			}
 			
@@ -40,6 +44,9 @@ int main(){
 			Sleep(2000);
 			if(rodada>1){
 				ataque(p2,p1);
+			
+				movimentacao(nome_jogador2, p2);
+		
 				printmapa();
 			}
 			
