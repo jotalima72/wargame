@@ -15,11 +15,13 @@ int main(){
     srand((unsigned)time(NULL));
 	//sortear quem inicia
 	vez = vezdojogador_sorteio();
+	//brincadeira
+	present();
 	//função para printar mapa zerado
 	printmapainicial();
 	// scanear os nomes dos jogadores
 	jogador_nome();
-	
+		
 	sorteio_paises(p1,p2);
 	muda_paises(p1,p2);
 	Sleep(1000);
@@ -64,6 +66,8 @@ int main(){
 		printmapa();
 		printf("Parabéns %s!\nVocê conquistou o mundo!\n", nome_jogador1);
 	}
+	system("pause");
+	
 
 	return 0;
 }
