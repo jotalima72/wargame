@@ -1177,7 +1177,7 @@ void ataque(char paisJatk[], char paisJdfs[]){
 				Sleep(2000);
 			}
 		}
-		else if(checkatk != 0){
+		else if(checkatk == 0){
 			printf("Esse país não te pertence ou não existe\n");
 			Sleep(2000);
 		}
